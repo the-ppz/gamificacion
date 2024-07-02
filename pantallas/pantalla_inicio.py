@@ -36,5 +36,5 @@ def pantalla_inicio(pantalla, ANCHO, ALTO):
         mostrar_texto(pantalla, "Historia y Cultura Local", fuente_titulo, NEGRO, (ANCHO // 2, ALTO // 2))
         mostrar_texto(pantalla, "Presiona Enter para comenzar", fuente_opciones, ROJO, (ANCHO // 2, ALTO // 2 + 100))
 
-        pygame.draw.circle(pantalla, AZUL, (ANCHO // 2, ALTO - 50), 20, 0)
+        #pygame.draw.circle(pantalla, AZUL, (ANCHO // 2, ALTO - 50), 20, 0)
         pygame.display.flip()

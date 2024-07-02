@@ -1,6 +1,5 @@
 import pygame
 import sys
-import random
 
 pygame.font.init()
 
@@ -10,7 +9,6 @@ ROJO = (255, 0, 0)
 
 fuente_pregunta = pygame.font.Font(None, 36)
 fuente_respuesta = pygame.font.Font(None, 28)
-
 
 preguntas = {
     "Nivel 1: Historia Antigua": [
@@ -72,10 +70,3 @@ def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion):
         mostrar_texto(pantalla, f"Puntuación: {puntuacion_total}", fuente_pregunta, NEGRO, (ANCHO // 2, 50))
 
         pygame.display.flip()
-
-def pantalla_juego(pantalla, ANCHO, ALTO, nivel):
-    puntuacion = 0
-    while True:
-        puntuacion = juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion)
-        # Si el juego de preguntas termina, volvemos a la selección de niveles
-        return puntuacion
