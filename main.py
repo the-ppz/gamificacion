@@ -5,7 +5,6 @@ from pantallas.seleccion_niveles import seleccion_niveles
 from pantallas.pantalla_juego import pantalla_juego
 from pantallas.leaderboard import mostrar_leaderboard
 from pantallas.minijuego import minijuego
-from pantallas.preguntas_respuestas import juego_preguntas
 
 pygame.init()
 
@@ -18,11 +17,11 @@ def main():
         pantalla_inicio(pantalla, ANCHO, ALTO)
         nivel = seleccion_niveles(pantalla, ANCHO, ALTO)
         if nivel == "Minijuego":
-            minijuego(pantalla, ANCHO, ALTO)
+            puntuacion = minijuego(pantalla, ANCHO, ALTO)
+            mostrar_leaderboard(pantalla, ANCHO, ALTO, "minijuego", puntuacion)
         else:
             puntuacion = pantalla_juego(pantalla, ANCHO, ALTO, nivel)
-            juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion)
-        mostrar_leaderboard(pantalla, ANCHO, ALTO)
+            mostrar_leaderboard(pantalla, ANCHO, ALTO, "preguntas", puntuacion)
 
 if __name__ == "__main__":
     main()

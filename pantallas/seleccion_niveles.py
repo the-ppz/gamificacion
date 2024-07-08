@@ -1,5 +1,6 @@
 import pygame
 import sys
+from pantallas.leaderboard import mostrar_leaderboard
 
 pygame.font.init()
 
@@ -10,7 +11,14 @@ ROJO = (255, 0, 0)
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_niveles = pygame.font.Font(None, 36)
 
-niveles = ["Nivel 1: Historia Antigua", "Nivel 2: Cultura Colonial", "Nivel 3: Independencia", "Minijuego"]
+niveles = [
+    "Nivel 1: Historia Antigua",
+    "Nivel 2: Cultura Colonial",
+    "Nivel 3: Independencia",
+    "Minijuego",
+    "Clasificación Minijuego",
+    "Clasificación Preguntas"
+]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):
     superficie = fuente.render(texto, True, color)
@@ -31,7 +39,12 @@ def seleccion_niveles(pantalla, ANCHO, ALTO):
                 elif evento.key == pygame.K_DOWN:
                     nivel_seleccionado = (nivel_seleccionado + 1) % len(niveles)
                 elif evento.key == pygame.K_RETURN:
-                    return niveles[nivel_seleccionado]
+                    if niveles[nivel_seleccionado] == "Clasificación Minijuego":
+                        mostrar_leaderboard(pantalla, ANCHO, ALTO, "minijuego")
+                    elif niveles[nivel_seleccionado] == "Clasificación Preguntas":
+                        mostrar_leaderboard(pantalla, ANCHO, ALTO, "preguntas")
+                    else:
+                        return niveles[nivel_seleccionado]
 
         pantalla.fill(BLANCO)
         mostrar_texto(pantalla, "Selecciona un Nivel", fuente_titulo, NEGRO, (ANCHO // 2, 50))
