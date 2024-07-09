@@ -17,7 +17,9 @@ niveles = [
     "Nivel 3: Independencia",
     "Minijuego",
     "Clasificación Minijuego",
-    "Clasificación Preguntas"
+    "Clasificación Nivel 1",
+    "Clasificación Nivel 2",
+    "Clasificación Nivel 3"
 ]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):
@@ -41,8 +43,12 @@ def seleccion_niveles(pantalla, ANCHO, ALTO):
                 elif evento.key == pygame.K_RETURN:
                     if niveles[nivel_seleccionado] == "Clasificación Minijuego":
                         mostrar_leaderboard(pantalla, ANCHO, ALTO, "minijuego")
-                    elif niveles[nivel_seleccionado] == "Clasificación Preguntas":
-                        mostrar_leaderboard(pantalla, ANCHO, ALTO, "preguntas")
+                    elif niveles[nivel_seleccionado] == "Clasificación Nivel 1":
+                        mostrar_leaderboard(pantalla, ANCHO, ALTO, "Nivel 1: Historia Antigua")
+                    elif niveles[nivel_seleccionado] == "Clasificación Nivel 2":
+                        mostrar_leaderboard(pantalla, ANCHO, ALTO, "Nivel 2: Cultura Colonial")
+                    elif niveles[nivel_seleccionado] == "Clasificación Nivel 3":
+                        mostrar_leaderboard(pantalla, ANCHO, ALTO, "Nivel 3: Independencia")
                     else:
                         return niveles[nivel_seleccionado]
 

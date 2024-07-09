@@ -13,7 +13,9 @@ fuente_nombre = pygame.font.Font(None, 36)
 
 LEADERBOARD_FILES = {
     "minijuego": "src/leaderboard_minijuego.json",
-    "preguntas": "src/leaderboard_preguntas.json"
+    "Nivel 1: Historia Antigua": "src/leaderboard_nivel1.json",
+    "Nivel 2: Cultura Colonial": "src/leaderboard_nivel2.json",
+    "Nivel 3: Independencia": "src/leaderboard_nivel3.json"
 }
 
 def verificar_crear_archivo(tipo):

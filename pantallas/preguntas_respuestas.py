@@ -9,9 +9,9 @@ NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
 VERDE = (0, 255, 0)
 
-fuente_pregunta = pygame.font.Font(None, 34)
-fuente_respuesta = pygame.font.Font(None, 26)
-fuente_feedback = pygame.font.Font(None, 34)
+fuente_pregunta = pygame.font.Font(None, 36)
+fuente_respuesta = pygame.font.Font(None, 28)
+fuente_feedback = pygame.font.Font(None, 36)
 
 preguntas = {
     "Nivel 1: Historia Antigua": [
@@ -60,13 +60,13 @@ def mostrar_pregunta(pantalla, pregunta, respuestas, seleccionada):
 
 def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion):
     preguntas_nivel = preguntas[nivel]
-    pregunta_actual = random.randint(0, len(preguntas_nivel) - 1)
+    preguntas_pendientes = preguntas_nivel.copy()
+    random.shuffle(preguntas_pendientes)
+    pregunta_actual = 0
     respuesta_seleccionada = 0
     puntuacion_total = puntuacion
     vidas = 3
     feedback = ""
-
-    preguntas_pendientes = preguntas_nivel.copy()
 
     while True:
         for evento in pygame.event.get():
@@ -79,6 +79,8 @@ def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion):
                 elif evento.key == pygame.K_DOWN:
                     respuesta_seleccionada = (respuesta_seleccionada + 1) % 4
                 elif evento.key == pygame.K_RETURN:
+                    if not preguntas_pendientes or vidas == 0:
+                        return puntuacion_total
                     pregunta, respuestas, correcta = preguntas_pendientes[pregunta_actual]
                     if respuesta_seleccionada == correcta:
                         puntuacion_total += 100  # Ganar puntos por respuesta correcta
@@ -88,20 +90,22 @@ def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion):
                         vidas -= 1
                         feedback = "Incorrecto"
                         if vidas == 0:
+                            mostrar_texto(pantalla, "¡Juego Terminado!", fuente_feedback, ROJO, (ANCHO // 2, ALTO // 2))
+                            pygame.display.flip()
+                            pygame.time.wait(2000)
                             return puntuacion_total
                     pygame.display.flip()
                     pygame.time.wait(1000)
                     if preguntas_pendientes:
                         pregunta_actual = random.randint(0, len(preguntas_pendientes) - 1)
-                    else:
-                        return puntuacion_total
 
         pantalla.fill(BLANCO)
+        if feedback:
+            mostrar_texto(pantalla, feedback, fuente_feedback, VERDE if feedback == "¡Correcto!" else ROJO, (ANCHO // 2, ALTO // 2 - 100))
         if preguntas_pendientes:
             pregunta, respuestas, _ = preguntas_pendientes[pregunta_actual]
             mostrar_pregunta(pantalla, pregunta, respuestas, respuesta_seleccionada)
-        mostrar_texto(pantalla, f"Puntuación: {puntuacion_total}", fuente_pregunta, NEGRO, (ANCHO // 2, 50))
-        mostrar_texto(pantalla, f"Vidas: {vidas}", fuente_pregunta, NEGRO, (ANCHO // 2, 80))
-        mostrar_texto(pantalla, feedback, fuente_feedback, VERDE if feedback == "¡Correcto!" else ROJO, (ANCHO // 2, 110))
+            mostrar_texto(pantalla, f"Puntuación: {puntuacion_total}", fuente_pregunta, NEGRO, (ANCHO // 2, 50))
+            mostrar_texto(pantalla, f"Vidas: {vidas}", fuente_pregunta, NEGRO, (ANCHO // 2, 100))
 
         pygame.display.flip()
