@@ -19,7 +19,8 @@ niveles = [
     "Clasificación Minijuego",
     "Clasificación Nivel 1",
     "Clasificación Nivel 2",
-    "Clasificación Nivel 3"
+    "Clasificación Nivel 3",
+    "Configuración"
 ]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):
@@ -28,7 +29,7 @@ def mostrar_texto(pantalla, texto, fuente, color, centro):
     rect.center = centro
     pantalla.blit(superficie, rect)
 
-def seleccion_niveles(pantalla, ANCHO, ALTO):
+def seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion):
     nivel_seleccionado = 0
     while True:
         for evento in pygame.event.get():
@@ -41,6 +42,7 @@ def seleccion_niveles(pantalla, ANCHO, ALTO):
                 elif evento.key == pygame.K_DOWN:
                     nivel_seleccionado = (nivel_seleccionado + 1) % len(niveles)
                 elif evento.key == pygame.K_RETURN:
+                    pygame.mixer.Sound.play(sonido_seleccion)
                     if niveles[nivel_seleccionado] == "Clasificación Minijuego":
                         mostrar_leaderboard(pantalla, ANCHO, ALTO, "minijuego")
                     elif niveles[nivel_seleccionado] == "Clasificación Nivel 1":

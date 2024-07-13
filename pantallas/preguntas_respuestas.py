@@ -70,7 +70,7 @@ def mostrar_pregunta(pantalla, pregunta, respuestas, seleccionada):
     for i, respuesta in enumerate(respuestas):
         color = ROJO if i == seleccionada else NEGRO
         mostrar_texto(pantalla, respuesta, fuente_respuesta, color, (400, 250 + i * 40))
-def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion):
+def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion, sonido_correcto, sonido_incorrecto):
     preguntas_nivel = preguntas[nivel]
     preguntas_pendientes = preguntas_nivel.copy()
     random.shuffle(preguntas_pendientes)
@@ -103,9 +103,11 @@ def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion):
                         puntuacion_total += 100  # Ganar puntos por respuesta correcta
                         feedback = "¡Correcto!"
                         preguntas_pendientes.pop(pregunta_actual)  # Eliminar pregunta respondida correctamente
+                        pygame.mixer.Sound.play(sonido_correcto)
                     else:
                         vidas -= 1
                         feedback = "Incorrecto"
+                        pygame.mixer.Sound.play(sonido_incorrecto)
                         if vidas == 0:
                             mostrar_texto(pantalla, "¡Juego Terminado!", fuente_feedback, ROJO, (ANCHO // 2, ALTO // 2))
                             pygame.display.flip()
