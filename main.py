@@ -8,6 +8,8 @@ from pantallas.minijuego import minijuego
 from pantallas.preguntas_respuestas import juego_preguntas
 from pantallas.leaderboard import mostrar_leaderboard
 from pantallas.configuracion import pantalla_configuracion
+from pantallas.pantalla_ayuda import pantalla_ayuda
+from pantallas.pantalla_equipo import pantalla_equipo
 
 pygame.init()
 
@@ -19,7 +21,7 @@ sonido_incorrecto = pygame.mixer.Sound('sonidos/incorrecto.mp3')
 
 sonidos = [sonido_seleccion, sonido_correcto, sonido_incorrecto]
 
-ANCHO, ALTO = 800, 600
+ANCHO, ALTO = 950, 750
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("EXPLORADORES DEL TIEMPO - ECUADOR")
 
@@ -59,6 +61,10 @@ def main():
         elif nivel == "Configuración":
             pantalla_configuracion(pantalla, ANCHO, ALTO, configuraciones, sonidos)
             guardar_configuraciones(configuraciones)
+        elif nivel == "Ayuda":
+            pantalla_ayuda(pantalla, ANCHO, ALTO)
+        elif nivel == "Equipo de Desarrolladores":
+            pantalla_equipo(pantalla, ANCHO, ALTO)
         else:
             pantalla_juego(pantalla, ANCHO, ALTO, nivel)
             

@@ -20,7 +20,9 @@ niveles = [
     "Clasificación Nivel 1",
     "Clasificación Nivel 2",
     "Clasificación Nivel 3",
-    "Configuración"
+    "Configuración",
+    "Ayuda",
+    "Equipo de Desarrolladores"
 ]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):
