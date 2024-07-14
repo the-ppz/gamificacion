@@ -9,8 +9,8 @@ NEGRO = (0, 0, 0)
 AZUL = (0, 0, 255)
 ROJO = (255, 0, 0)
 
-fondo = pygame.image.load('src/fondo_inicio.png')
-logo = pygame.image.load('src/logo_juego.jpg')
+fondo = pygame.image.load('src/fondo_inicio.jpg')
+logo = pygame.image.load('src/logo_juego.png')
 
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_opciones = pygame.font.Font(None, 36)

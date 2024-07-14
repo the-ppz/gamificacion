@@ -49,7 +49,7 @@ def main():
         nivel = seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion)
         
         if nivel == "Minijuego":
-            puntuacion = minijuego(pantalla, ANCHO, ALTO)
+            puntuacion = minijuego(pantalla, ANCHO, ALTO, configuraciones["dificultad"])
             puntos_experiencia += puntuacion
             guardar_experiencia(puntos_experiencia)
             mostrar_leaderboard(pantalla, ANCHO, ALTO, "minijuego", puntuacion)

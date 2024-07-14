@@ -21,9 +21,9 @@ moneda_img = pygame.image.load('src/moneda.png')
 moneda_img = pygame.transform.scale(moneda_img, (25, 25))
 
 fondos = {
-    "Nivel 1: Historia Antigua": pygame.image.load('src/logo_juego.jpg'),
-    "Nivel 2: Cultura Colonial": pygame.image.load('src/logo_juego.jpg'),
-    "Nivel 3: Independencia": pygame.image.load('src/logo_juego.jpg')
+    "Nivel 1: Historia Antigua": pygame.image.load('src/fondo_inicio.jpg'),
+    "Nivel 2: Cultura Colonial": pygame.image.load('src/fondo_inicio.jpg'),
+    "Nivel 3: Independencia": pygame.image.load('src/fondo_inicio.jpg')
 }
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):

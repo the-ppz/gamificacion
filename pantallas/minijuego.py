@@ -11,9 +11,9 @@ ROJO = (255, 0, 0)
 
 # Cargar imágenes de fondo según el nivel
 fondos = {
-    "Nivel 1: Historia Antigua": pygame.image.load('src/logo_juego.jpg'),
-    "Nivel 2: Cultura Colonial": pygame.image.load('src/logo_juego.jpg'),
-    "Nivel 3: Independencia": pygame.image.load('src/logo_juego.jpg')
+    "Nivel 1: Historia Antigua": pygame.image.load('src/fondo_inicio.jpg'),
+    "Nivel 2: Cultura Colonial": pygame.image.load('src/fondo_inicio.jpg'),
+    "Nivel 3: Independencia": pygame.image.load('src/fondo_inicio.jpg')
 }
 
 # Cargar y escalar imágenes del jugador, obstáculos y monedas
@@ -75,7 +75,7 @@ def mostrar_texto(pantalla, texto, fuente, color, centro):
     rect.center = centro
     pantalla.blit(superficie, rect)
 
-def minijuego(pantalla, ANCHO, ALTO):
+def minijuego(pantalla, ANCHO, ALTO, dificultad):
     # Cargar la experiencia y determinar el nivel
     puntos_experiencia = cargar_experiencia()
     nivel_experiencia = obtener_nivel_experiencia(puntos_experiencia)
@@ -84,7 +84,16 @@ def minijuego(pantalla, ANCHO, ALTO):
     # Configuración inicial del jugador
     jugador_rect = jugador_img.get_rect()
     jugador_rect.topleft = (ANCHO // 2, ALTO - 100)
-    velocidad_jugador = 5
+    
+    if dificultad == 0:  # Fácil
+        velocidad_jugador = 7
+        velocidad_obstaculo = 2
+    elif dificultad == 1:  # Medio
+        velocidad_jugador = 5
+        velocidad_obstaculo = 4
+    else:  # Difícil
+        velocidad_jugador = 3
+        velocidad_obstaculo = 6
 
     # Configuración inicial de los obstáculos y monedas
     obstaculos = [pygame.Rect(random.randint(0, ANCHO - 50), random.randint(-500, 0), 50, 50) for _ in range(5)]
@@ -93,7 +102,6 @@ def minijuego(pantalla, ANCHO, ALTO):
     puntuacion = 0
     puntos_compensables = 0
     monedas_recolectadas = 0
-    velocidad_obstaculo = 2
     pausa = False
     game_over = False
     reloj = pygame.time.Clock()
@@ -126,7 +134,8 @@ def minijuego(pantalla, ANCHO, ALTO):
                 if obstaculo.top > ALTO:
                     obstaculo.topleft = (random.randint(0, ANCHO - 50), random.randint(-500, 0))
                     puntuacion += 50  # Ganar puntos de experiencia
-                    velocidad_obstaculo += 0.1  # Aumentar la velocidad gradualmente
+                    if dificultad == 2:  # Aumentar la velocidad gradualmente solo en difícil
+                        velocidad_obstaculo += 0.1
 
             # Movimiento de las monedas
             for moneda in monedas:
