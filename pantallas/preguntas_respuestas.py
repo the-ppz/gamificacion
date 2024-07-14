@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 from pantallas.experiencia import obtener_nivel_experiencia
+from pantallas.logros import verificar_logros, logros_definidos
 
 pygame.font.init()
 
@@ -14,6 +15,7 @@ fuente_pregunta = pygame.font.Font(None, 36)
 fuente_respuesta = pygame.font.Font(None, 28)
 fuente_feedback = pygame.font.Font(None, 36)
 fuente_pausa = pygame.font.Font(None, 48)
+fuente_logros = pygame.font.Font(None, 28)
 
 preguntas = {
     "Nivel 1: Historia Antigua": [
@@ -65,12 +67,58 @@ def mostrar_texto(pantalla, texto, fuente, color, centro):
     rect = superficie.get_rect()
     rect.center = centro
     pantalla.blit(superficie, rect)
+    
+def mostrar_logros(pantalla, ANCHO, ALTO, logros_obtenidos):
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_RETURN or evento.key == pygame.K_ESCAPE:
+                    return
 
-def mostrar_pregunta(pantalla, pregunta, respuestas, seleccionada):
-    mostrar_texto(pantalla, pregunta, fuente_pregunta, NEGRO, (400, 150))
+        pantalla.fill(BLANCO)
+        mostrar_texto(pantalla, "Logros Obtenidos", fuente_logros, NEGRO, (ANCHO // 2, 50))
+
+        for i, logro in enumerate(logros_obtenidos):
+            mostrar_texto(pantalla, logro, fuente_logros, NEGRO, (ANCHO // 2, 150 + i * 50))
+
+        mostrar_texto(pantalla, "Presiona Enter para continuar", fuente_logros, NEGRO, (ANCHO // 2, ALTO - 50))
+
+        pygame.display.flip()
+
+def dividir_texto(texto, fuente, max_ancho):
+    palabras = texto.split(' ')
+    lineas = []
+    linea_actual = ""
+
+    for palabra in palabras:
+        if fuente.size(linea_actual + palabra)[0] < max_ancho:
+            linea_actual += palabra + " "
+        else:
+            lineas.append(linea_actual)
+            linea_actual = palabra + " "
+
+    lineas.append(linea_actual)
+    return lineas
+
+def mostrar_pregunta(pantalla, pregunta, respuestas, seleccionada, fuente_pregunta, fuente_respuesta, ancho_pantalla):
+    lineas_pregunta = dividir_texto(pregunta, fuente_pregunta, ancho_pantalla - 40)
+    y_offset = 150
+    for linea in lineas_pregunta:
+        mostrar_texto(pantalla, linea.strip(), fuente_pregunta, NEGRO, (ancho_pantalla // 2, y_offset))
+        y_offset += 40
+
+    y_offset += 20  # Espacio adicional entre la pregunta y las respuestas
+
     for i, respuesta in enumerate(respuestas):
-        color = ROJO if i == seleccionada else NEGRO
-        mostrar_texto(pantalla, respuesta, fuente_respuesta, color, (400, 250 + i * 40))
+        lineas_respuesta = dividir_texto(respuesta, fuente_respuesta, ancho_pantalla - 40)
+        for linea in lineas_respuesta:
+            color = ROJO if i == seleccionada else NEGRO
+            mostrar_texto(pantalla, linea.strip(), fuente_respuesta, color, (ancho_pantalla // 2, y_offset))
+            y_offset += 30
+        y_offset += 10  # Espacio adicional entre respuestas
 
 def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion, sonido_correcto, sonido_incorrecto, puntos_experiencia):
     preguntas_nivel = preguntas[nivel]
@@ -78,7 +126,13 @@ def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion, sonido_correcto, s
     respuesta_seleccionada = 0
     puntuacion_total = puntuacion
     vidas = 3
+    respuestas_correctas_consecutivas = 0
+    errores = 0
+    tiempo_inicio = pygame.time.get_ticks()
     preguntas_pendientes = list(range(len(preguntas_nivel)))
+    pausa = False
+    feedback = ""
+    feedback_tiempo = 0
 
     while True:
         for evento in pygame.event.get():
@@ -91,32 +145,58 @@ def juego_preguntas(pantalla, ANCHO, ALTO, nivel, puntuacion, sonido_correcto, s
                 elif evento.key == pygame.K_DOWN:
                     respuesta_seleccionada = (respuesta_seleccionada + 1) % 4
                 elif evento.key == pygame.K_RETURN:
-                    _, respuestas, correcta = preguntas_nivel[pregunta_actual]
-                    if respuesta_seleccionada == correcta:
-                        puntuacion_total += 100
-                        puntos_experiencia += 100
-                        sonido_correcto.play()
+                    if pausa:
+                        pausa = False
                     else:
-                        vidas -= 1
-                        sonido_incorrecto.play()
-                        if vidas == 0:
-                            return puntuacion_total, puntos_experiencia
+                        _, respuestas, correcta = preguntas_nivel[pregunta_actual]
+                        if respuesta_seleccionada == correcta:
+                            puntuacion_total += 100
+                            puntos_experiencia += 100
+                            respuestas_correctas_consecutivas += 1
+                            sonido_correcto.play()
+                            feedback = "¡Correcto!"
+                        else:
+                            vidas -= 1
+                            respuestas_correctas_consecutivas = 0
+                            errores += 1
+                            sonido_incorrecto.play()
+                            feedback = "Incorrecto"
+                            if vidas == 0:
+                                tiempo_total = (pygame.time.get_ticks() - tiempo_inicio) / 1000  # Convertir a segundos
+                                logros_obtenidos = verificar_logros(nivel, puntuacion_total, respuestas_correctas_consecutivas, tiempo_total, errores)
+                                return puntuacion_total, puntos_experiencia, logros_obtenidos
 
-                    preguntas_pendientes.remove(pregunta_actual)
-                    if preguntas_pendientes:
-                        pregunta_actual = random.choice(preguntas_pendientes)
-                    else:
-                        return puntuacion_total, puntos_experiencia
+                        feedback_tiempo = pygame.time.get_ticks() + 1000  # Mostrar feedback por 1 segundo
+
+                        preguntas_pendientes.remove(pregunta_actual)
+                        if preguntas_pendientes:
+                            pregunta_actual = random.choice(preguntas_pendientes)
+                        else:
+                            tiempo_total = (pygame.time.get_ticks() - tiempo_inicio) / 1000  # Convertir a segundos
+                            logros_obtenidos = verificar_logros(nivel, puntuacion_total, respuestas_correctas_consecutivas, tiempo_total, errores)
+                            return puntuacion_total, puntos_experiencia, logros_obtenidos
+                elif evento.key == pygame.K_p:
+                    pausa = not pausa
+                elif evento.key == pygame.K_ESCAPE:
+                    return puntuacion_total, puntos_experiencia, []
 
         pantalla.fill(BLANCO)
-        pregunta, respuestas, _ = preguntas_nivel[pregunta_actual]
-        mostrar_pregunta(pantalla, pregunta, respuestas, respuesta_seleccionada)
-        mostrar_texto(pantalla, f"Puntuación: {puntuacion_total}", fuente_pregunta, NEGRO, (ANCHO // 2, 50))
-        mostrar_texto(pantalla, f"Vidas: {vidas}", fuente_pregunta, ROJO, (ANCHO // 2, 100))
+        if pausa:
+            mostrar_texto(pantalla, "Juego en Pausa", fuente_pausa, ROJO, (ANCHO // 2, ALTO // 2))
+            mostrar_texto(pantalla, "Presiona ENTER para continuar", fuente_respuesta, ROJO, (ANCHO // 2, ALTO // 2 + 50))
+        else:
+            pregunta, respuestas, _ = preguntas_nivel[pregunta_actual]
+            mostrar_pregunta(pantalla, pregunta, respuestas, respuesta_seleccionada, fuente_pregunta, fuente_respuesta, ANCHO)
+            mostrar_texto(pantalla, f"Puntuación: {puntuacion_total}", fuente_pregunta, NEGRO, (ANCHO // 2, 50))
+            mostrar_texto(pantalla, f"Vidas: {vidas}", fuente_pregunta, ROJO, (ANCHO // 2, 100))
 
-        # Mostrar el nivel de experiencia
-        nivel_experiencia = obtener_nivel_experiencia(puntos_experiencia)
-        mostrar_texto(pantalla, f"Nivel: {nivel_experiencia}", fuente_pregunta, NEGRO, (ANCHO - 150, 50))
-        mostrar_texto(pantalla, f"XP: {puntos_experiencia}", fuente_pregunta, NEGRO, (ANCHO - 150, 80))
+            # Mostrar el nivel de experiencia
+            nivel_experiencia = obtener_nivel_experiencia(puntos_experiencia)
+            mostrar_texto(pantalla, f"Nivel: {nivel_experiencia}", fuente_logros, NEGRO, (ANCHO - 100, ALTO - 50))
+            mostrar_texto(pantalla, f"XP: {puntos_experiencia}", fuente_logros, NEGRO, (ANCHO - 100, ALTO - 20))
+
+            # Mostrar feedback
+            if pygame.time.get_ticks() < feedback_tiempo:
+                mostrar_texto(pantalla, feedback, fuente_feedback, VERDE if feedback == "¡Correcto!" else ROJO, (ANCHO // 2, ALTO // 2 + 100))
 
         pygame.display.flip()
