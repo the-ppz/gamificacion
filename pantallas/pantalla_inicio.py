@@ -48,10 +48,10 @@ def pantalla_inicio(pantalla, ANCHO, ALTO):
             mostrar_texto(pantalla, "Presiona Enter para comenzar", fuente_opciones, ROJO, (ANCHO // 2, ALTO // 2 + 100))
         
         # Añadir barra de progreso de experiencia
-        pygame.draw.rect(pantalla, NEGRO, (ANCHO - 210, ALTO - 30, 200, 20), 2)
-        pygame.draw.rect(pantalla, AMARILLO, (ANCHO - 208, ALTO - 28, 200 * puntos_experiencia / 2500, 16))
+        # pygame.draw.rect(pantalla, NEGRO, (ANCHO - 210, ALTO - 30, 200, 20), 2)
+        # pygame.draw.rect(pantalla, AMARILLO, (ANCHO - 208, ALTO - 28, 200 * puntos_experiencia / 2500, 16))
 
-        mostrar_texto(pantalla, f"Nivel: {nivel_experiencia}", fuente_nivel, NEGRO, (ANCHO - 150, ALTO - 50))
-        mostrar_texto(pantalla, f"XP: {puntos_experiencia}", fuente_nivel, NEGRO, (ANCHO - 150, ALTO - 20))
+        # mostrar_texto(pantalla, f"Nivel: {nivel_experiencia}", fuente_nivel, NEGRO, (ANCHO - 150, ALTO - 50))
+        # mostrar_texto(pantalla, f"XP: {puntos_experiencia}", fuente_nivel, NEGRO, (ANCHO - 150, ALTO - 20))
 
         pygame.display.flip()

@@ -6,6 +6,9 @@ pygame.font.init()
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
+AZUL_CLARO = (173, 216, 230)
+
+fondo = pygame.image.load('src/fondo_inicio.jpg')
 
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_texto = pygame.font.Font(None, 36)
@@ -26,12 +29,19 @@ def pantalla_ayuda(pantalla, ANCHO, ALTO):
                 if evento.key == pygame.K_RETURN or evento.key == pygame.K_ESCAPE:
                     return
 
-        pantalla.fill(BLANCO)
+        pantalla.blit(fondo, (0, 0))
         mostrar_texto(pantalla, "Ayuda", fuente_titulo, NEGRO, (ANCHO // 2, 50))
-        mostrar_texto(pantalla, "Usa las flechas para moverte", fuente_texto, NEGRO, (ANCHO // 2, 150))
-        mostrar_texto(pantalla, "Presiona Enter para seleccionar", fuente_texto, NEGRO, (ANCHO // 2, 200))
-        mostrar_texto(pantalla, "Presiona P para pausar", fuente_texto, NEGRO, (ANCHO // 2, 250))
-        mostrar_texto(pantalla, "Presiona ESC para salir", fuente_texto, NEGRO, (ANCHO // 2, 300))
-        mostrar_texto(pantalla, "Presiona Enter para volver", fuente_texto, ROJO, (ANCHO // 2, ALTO - 50))
+
+        instrucciones = [
+            "Usa las flechas para moverte",
+            "Presiona Enter para seleccionar",
+            "Presiona P para pausar",
+            "Presiona ESC para salir",
+            "Presiona Enter para volver"
+        ]
+
+        for i, instruccion in enumerate(instrucciones):
+            color = ROJO if "volver" in instruccion else NEGRO
+            mostrar_texto(pantalla, instruccion, fuente_texto, color, (ANCHO // 2, 150 + i * 50))
 
         pygame.display.flip()
