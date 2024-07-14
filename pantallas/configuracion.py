@@ -10,7 +10,7 @@ ROJO = (255, 0, 0)
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_opciones = pygame.font.Font(None, 36)
 
-opciones = ["Volumen: ", "Dificultad: "]
+opciones = ["Volumen: ", "Dificultad del Minijuego: "]
 dificultades = ["Fácil", "Medio", "Difícil"]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):

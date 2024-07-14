@@ -1,6 +1,7 @@
 import pygame
 import sys
 from pantallas.leaderboard import mostrar_leaderboard
+from pantallas.experiencia import obtener_nivel_experiencia, cargar_experiencia
 
 pygame.font.init()
 
@@ -10,6 +11,7 @@ ROJO = (255, 0, 0)
 
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_niveles = pygame.font.Font(None, 36)
+fuente_nivel = pygame.font.Font(None, 28)
 
 niveles = [
     "Nivel 1: Historia Antigua",
@@ -33,6 +35,9 @@ def mostrar_texto(pantalla, texto, fuente, color, centro):
 
 def seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion):
     nivel_seleccionado = 0
+    puntos_experiencia = cargar_experiencia()
+    nivel_experiencia = obtener_nivel_experiencia(puntos_experiencia)
+    
     while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -62,5 +67,8 @@ def seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion):
         for i, nivel in enumerate(niveles):
             color = ROJO if i == nivel_seleccionado else NEGRO
             mostrar_texto(pantalla, nivel, fuente_niveles, color, (ANCHO // 2, 150 + i * 50))
+            
+        mostrar_texto(pantalla, f"Nivel: {nivel_experiencia}", fuente_nivel, NEGRO, (ANCHO - 100, ALTO - 50))
+        mostrar_texto(pantalla, f"XP: {puntos_experiencia}", fuente_nivel, NEGRO, (ANCHO - 100, ALTO - 20))
 
         pygame.display.flip()
