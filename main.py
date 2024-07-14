@@ -2,7 +2,7 @@ import pygame
 import sys
 import json
 from pantallas.pantalla_inicio import pantalla_inicio
-from pantallas.seleccion_niveles import seleccion_niveles
+from pantallas.seleccion_niveles import seleccion_niveles, pantalla_clasificaciones
 from pantallas.pantalla_juego import pantalla_juego
 from pantallas.minijuego import minijuego
 from pantallas.preguntas_respuestas import juego_preguntas, mostrar_logros
@@ -69,14 +69,16 @@ def main():
             mostrar_logros(pantalla, ANCHO, ALTO, logros_obtenidos)
             mostrar_leaderboard(pantalla, ANCHO, ALTO, "Nivel 3: Independencia", puntuacion)
         elif nivel == "Configuración":
-            pantalla_configuracion(pantalla, ANCHO, ALTO, configuraciones, sonidos)
+            configuracion_resultado = pantalla_configuracion(pantalla, ANCHO, ALTO, configuraciones, sonidos)
             guardar_configuraciones(configuraciones)
-        elif nivel == "Ayuda":
-            pantalla_ayuda(pantalla, ANCHO, ALTO)
-        elif nivel == "Equipo de Desarrolladores":
-            pantalla_equipo(pantalla, ANCHO, ALTO)
+            if configuracion_resultado == "Ayuda":
+                pantalla_ayuda(pantalla, ANCHO, ALTO)
+            elif configuracion_resultado == "Equipo de Desarrolladores":
+                pantalla_equipo(pantalla, ANCHO, ALTO)
+        elif nivel == "Clasificaciones":
+            pantalla_clasificaciones(pantalla, ANCHO, ALTO, sonido_seleccion)
         elif nivel == "pantalla_inicio":
-                continue
+            continue
         else:
             pantalla_juego(pantalla, ANCHO, ALTO, nivel, puntos_experiencia)
             
