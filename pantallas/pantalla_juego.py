@@ -13,7 +13,7 @@ fuente_puntuacion = pygame.font.Font(None, 36)
 fuente_pausa = pygame.font.Font(None, 48)
 fuente_game_over = pygame.font.Font(None, 74)
 
-jugador_img = pygame.image.load('src/jugador.png')
+jugador_img = pygame.image.load('src/principiante.png')
 jugador_img = pygame.transform.scale(jugador_img, (50, 50))
 obstaculo_img = pygame.image.load('src/obstaculo.png')
 obstaculo_img = pygame.transform.scale(obstaculo_img, (50, 50))
