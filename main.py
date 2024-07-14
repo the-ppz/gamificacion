@@ -75,6 +75,8 @@ def main():
             pantalla_ayuda(pantalla, ANCHO, ALTO)
         elif nivel == "Equipo de Desarrolladores":
             pantalla_equipo(pantalla, ANCHO, ALTO)
+        elif nivel == "pantalla_inicio":
+                continue
         else:
             pantalla_juego(pantalla, ANCHO, ALTO, nivel, puntos_experiencia)
             
