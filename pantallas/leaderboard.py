@@ -7,6 +7,10 @@ pygame.font.init()
 
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
+ROJO = (255, 0, 0)
+VERDE = (0, 255, 0)
+AZUL = (0, 0, 255)
+GRIS_CLARO = (240, 240, 240)
 
 fuente_leaderboard = pygame.font.Font(None, 48)
 fuente_nombre = pygame.font.Font(None, 36)
@@ -53,10 +57,10 @@ def pedir_nombre(pantalla, ANCHO, ALTO, puntuacion):
                 else:
                     nombre += evento.unicode
 
-        pantalla.fill(BLANCO)
-        mostrar_texto(pantalla, "Ingresa tu nombre:", fuente_nombre, NEGRO, (ANCHO // 2, ALTO // 2 - 50))
-        mostrar_texto(pantalla, nombre, fuente_nombre, NEGRO, (ANCHO // 2, ALTO // 2))
-        mostrar_texto(pantalla, f"Puntuación: {puntuacion}", fuente_nombre, NEGRO, (ANCHO // 2, ALTO // 2 + 50))
+        pantalla.fill(GRIS_CLARO)
+        mostrar_texto(pantalla, "Ingresa tu nombre:", fuente_nombre, NEGRO, (ANCHO // 2, ALTO // 2 - 50), fondo=BLANCO, padding=10, border_radius=10)
+        mostrar_texto(pantalla, nombre, fuente_nombre, NEGRO, (ANCHO // 2, ALTO // 2), fondo=BLANCO, padding=10, border_radius=10)
+        mostrar_texto(pantalla, f"Puntuación: {puntuacion}", fuente_nombre, NEGRO, (ANCHO // 2, ALTO // 2 + 50), fondo=BLANCO, padding=10, border_radius=10)
         pygame.display.flip()
 
 def actualizar_leaderboard(tipo, leaderboard_data, nombre, puntuacion):
@@ -65,10 +69,14 @@ def actualizar_leaderboard(tipo, leaderboard_data, nombre, puntuacion):
     guardar_leaderboard(tipo, leaderboard_data)
     return leaderboard_data
 
-def mostrar_texto(pantalla, texto, fuente, color, centro):
+def mostrar_texto(pantalla, texto, fuente, color, centro, fondo=BLANCO, padding=10, border_radius=10):
     superficie = fuente.render(texto, True, color)
     rect = superficie.get_rect()
     rect.center = centro
+
+    # Dibujar fondo redondeado
+    fondo_rect = rect.inflate(padding * 2, padding * 2)
+    pygame.draw.rect(pantalla, fondo, fondo_rect, border_radius=border_radius)
     pantalla.blit(superficie, rect)
 
 def mostrar_leaderboard(pantalla, ANCHO, ALTO, tipo, puntuacion=None):
@@ -87,13 +95,13 @@ def mostrar_leaderboard(pantalla, ANCHO, ALTO, tipo, puntuacion=None):
                 if evento.key == pygame.K_RETURN or evento.key == pygame.K_ESCAPE:
                     return
 
-        pantalla.fill(BLANCO)
-        mostrar_texto(pantalla, "Leaderboard", fuente_leaderboard, NEGRO, (ANCHO // 2, 50))
+        pantalla.fill(GRIS_CLARO)
+        mostrar_texto(pantalla, "Clasificación", fuente_leaderboard, NEGRO, (ANCHO // 2, 50), padding=20)
 
         for i, (jugador, puntuacion) in enumerate(leaderboard_data):
             texto = f"{i + 1}. {jugador} - {puntuacion} puntos"
-            mostrar_texto(pantalla, texto, fuente_leaderboard, NEGRO, (ANCHO // 2, 150 + i * 50))
+            mostrar_texto(pantalla, texto, fuente_nombre, NEGRO, (ANCHO // 2, 150 + i * 50), fondo=BLANCO, padding=10, border_radius=10)
 
-        mostrar_texto(pantalla, "Presiona Enter para continuar", fuente_leaderboard, NEGRO, (ANCHO // 2, ALTO - 50))
+        mostrar_texto(pantalla, "Presiona Enter para continuar", fuente_nombre, NEGRO, (ANCHO // 2, ALTO - 50), fondo=VERDE, padding=10, border_radius=10)
 
         pygame.display.flip()

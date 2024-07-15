@@ -32,7 +32,7 @@ moneda_img = pygame.image.load('src/moneda.png')
 moneda_img = pygame.transform.scale(moneda_img, (25, 25))
 
 # Definición de fuentes
-fuente_puntuacion = pygame.font.Font(None, 36)
+fuente_puntuacion = pygame.font.Font(None, 28)
 fuente_pausa = pygame.font.Font(None, 48)
 fuente_game_over = pygame.font.Font(None, 74)
 
@@ -171,10 +171,11 @@ def minijuego(pantalla, ANCHO, ALTO, dificultad):
                 pantalla.blit(moneda_img, moneda.topleft)
 
             # Mostrar la puntuación y otros puntos
-            mostrar_texto(pantalla, f"Puntuación: {puntuacion}", fuente_puntuacion, NEGRO, (100, 50))
-            mostrar_texto(pantalla, f"Puntos Compensables: {puntos_compensables}", fuente_puntuacion, NEGRO, (100, 80))
-            mostrar_texto(pantalla, f"Monedas: {monedas_recolectadas}", fuente_puntuacion, NEGRO, (100, 110))
-            mostrar_texto(pantalla, "Presiona P para Pausar", fuente_puntuacion, ROJO, (ANCHO // 2, ALTO - 50))
+            mostrar_texto(pantalla, f"Puntuación: {puntuacion}", fuente_puntuacion, NEGRO, (150, 50))
+            mostrar_texto(pantalla, f"Puntos Compensables: {puntos_compensables}", fuente_puntuacion, NEGRO, (150, 80))
+            mostrar_texto(pantalla, f"Monedas: {monedas_recolectadas}", fuente_puntuacion, NEGRO, (150, 110))
+            mostrar_texto(pantalla, "Presiona P para Pausar", fuente_puntuacion, ROJO, (ANCHO - 150, ALTO - 50))
+            mostrar_texto(pantalla, "Presiona ESC para regresar al menú", fuente_puntuacion, ROJO, (ANCHO - 170, ALTO - 80))
         elif game_over:
             mostrar_texto(pantalla, "GAME OVER", fuente_game_over, ROJO, (ANCHO // 2, ALTO // 2))
             mostrar_texto(pantalla, "Presiona ESC para regresar al menú", fuente_pausa, ROJO, (ANCHO // 2, ALTO // 2 + 100))
