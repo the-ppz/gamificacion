@@ -12,14 +12,22 @@ VERDE = (0, 255, 0)
 AZUL = (0, 0, 255)
 GRIS_CLARO = (240, 240, 240)
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 fuente_leaderboard = pygame.font.Font(None, 48)
 fuente_nombre = pygame.font.Font(None, 36)
 
 LEADERBOARD_FILES = {
-    "minijuego": "src/leaderboard_minijuego.json",
-    "Nivel 1: Historia Antigua": "src/leaderboard_nivel1.json",
-    "Nivel 2: Cultura Colonial": "src/leaderboard_nivel2.json",
-    "Nivel 3: Independencia": "src/leaderboard_nivel3.json"
+    "minijuego": resource_path("src/leaderboard_minijuego.json"),
+    "Nivel 1: Historia Antigua": resource_path("src/leaderboard_nivel1.json"),
+    "Nivel 2: Cultura Colonial": resource_path("src/leaderboard_nivel2.json"),
+    "Nivel 3: Independencia": resource_path("src/leaderboard_nivel3.json")
 }
 
 def verificar_crear_archivo(tipo):

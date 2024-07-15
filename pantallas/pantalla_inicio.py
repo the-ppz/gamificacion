@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from pantallas.experiencia import obtener_nivel_experiencia, cargar_experiencia
 
 pygame.font.init()
@@ -10,8 +11,16 @@ AZUL = (0, 0, 255)
 ROJO = (255, 0, 0)
 AMARILLO = (255, 255, 0)
 
-fondo = pygame.image.load('src/fondo_inicio.jpg')
-logo = pygame.image.load('src/logo_juego.png')
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+fondo = pygame.image.load(resource_path('src/fondo_inicio.jpg'))
+logo = pygame.image.load(resource_path('src/logo_juego.png'))
 
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_opciones = pygame.font.Font(None, 36)

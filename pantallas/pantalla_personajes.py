@@ -1,11 +1,20 @@
 # pantalla_personajes.py
 import pygame
 import sys
+import os
 
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 AZUL_CLARO = (173, 216, 230)
 VERDE = (59, 158, 98)
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 fuente_titulo = pygame.font.Font(None, 64)
 fuente_niveles = pygame.font.Font(None, 27)
@@ -20,11 +29,11 @@ personajes = [
 ]
 
 personajes_imagenes = [
-    "src/principiante.png",
-    "src/aprendiz.png",
-    "src/historico.png",
-    "src/erudito.png",
-    "src/sabio.png"
+    resource_path("src/principiante.png"),
+    resource_path("src/aprendiz.png"),
+    resource_path("src/historico.png"),
+    resource_path("src/erudito.png"),
+    resource_path("src/sabio.png")
 ]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):

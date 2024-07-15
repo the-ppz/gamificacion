@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 
 pygame.font.init()
 
@@ -8,7 +9,15 @@ NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
 AZUL_CLARO = (173, 216, 230)
 
-fondo = pygame.image.load('src/fondo_inicio.jpg')
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+fondo = pygame.image.load(resource_path('src/fondo_inicio.jpg'))
 
 fuente_titulo = pygame.font.Font(None, 74)
 fuente_texto = pygame.font.Font(None, 36)
