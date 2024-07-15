@@ -47,6 +47,22 @@ niveles_imagenes = [
     "src/minijuego.png"
 ]
 
+personajes = [
+    "Principiante - 0xp",
+    "Aprendiz - 500xp",
+    "Histórico - 1000xp",
+    "Erudito - 1500xp",
+    "Sabio - 2000xp"
+]
+
+personajes_imagenes = [
+    "src/principiante.png",
+    "src/aprendiz.png",
+    "src/historico.png",
+    "src/erudito.png",
+    "src/sabio.png"
+]
+
 def mostrar_texto(pantalla, texto, fuente, color, centro):
     superficie = fuente.render(texto, True, color)
     rect = superficie.get_rect()
@@ -73,7 +89,7 @@ def seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion):
     nivel_seleccionado = 0
     puntos_experiencia = cargar_experiencia()
     nivel_experiencia = obtener_nivel_experiencia(puntos_experiencia)
-    
+
     while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -81,16 +97,18 @@ def seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion):
                 sys.exit()
             elif evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_UP:
-                    nivel_seleccionado = (nivel_seleccionado - 1) % (len(niveles) + 2)
+                    nivel_seleccionado = (nivel_seleccionado - 1) % (len(niveles) + 3)
                 elif evento.key == pygame.K_DOWN:
-                    nivel_seleccionado = (nivel_seleccionado + 1) % (len(niveles) + 2)
+                    nivel_seleccionado = (nivel_seleccionado + 1) % (len(niveles) + 3)
                 elif evento.key == pygame.K_RETURN:
                     pygame.mixer.Sound.play(sonido_seleccion)
                     if nivel_seleccionado < len(niveles):
                         return niveles[nivel_seleccionado]
                     elif nivel_seleccionado == len(niveles):
-                        return "Clasificaciones"
+                        return "Personajes"
                     elif nivel_seleccionado == len(niveles) + 1:
+                        return "Clasificaciones"
+                    elif nivel_seleccionado == len(niveles) + 2:
                         return "Configuración"
                 elif evento.key == pygame.K_ESCAPE:
                     return "pantalla_inicio"
@@ -106,17 +124,18 @@ def seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion):
         for i in range(len(niveles)):
             x = espacio_x + i * (ancho_tarjeta + 50)
             y = espacio_y
-            mostrar_tarjeta_nivel(pantalla, x, y, ancho_tarjeta, alto_tarjeta, niveles[i], niveles_imagenes[i], i == nivel_seleccionado)
-        
-        # Mostrar "Clasificaciones" y "Configuración" debajo de las tarjetas
+            mostrar_tarjeta(pantalla, x, y, ancho_tarjeta, alto_tarjeta, niveles[i], niveles_imagenes[i], i == nivel_seleccionado)
+
+        # Mostrar "Personajes", "Clasificaciones" y "Configuración" debajo de las tarjetas
         y_opciones = espacio_y + alto_tarjeta + 50
-        mostrar_texto(pantalla, "Clasificaciones", fuente_niveles, ROJO if nivel_seleccionado == len(niveles) else NEGRO, (ANCHO // 2, y_opciones))
-        mostrar_texto(pantalla, "Configuración", fuente_niveles, ROJO if nivel_seleccionado == len(niveles) + 1 else NEGRO, (ANCHO // 2, y_opciones + 50))
+        mostrar_texto(pantalla, "Personajes", fuente_niveles, ROJO if nivel_seleccionado == len(niveles) else NEGRO, (ANCHO // 2, y_opciones))
+        mostrar_texto(pantalla, "Clasificaciones", fuente_niveles, ROJO if nivel_seleccionado == len(niveles) + 1 else NEGRO, (ANCHO // 2, y_opciones + 50))
+        mostrar_texto(pantalla, "Configuración", fuente_niveles, ROJO if nivel_seleccionado == len(niveles) + 2 else NEGRO, (ANCHO // 2, y_opciones + 100))
 
         # Añadir barra de progreso de experiencia
         pygame.draw.rect(pantalla, NEGRO, (ANCHO - 210, ALTO - 30, 200, 20), 2)
         pygame.draw.rect(pantalla, AMARILLO, (ANCHO - 208, ALTO - 28, 200 * puntos_experiencia / 2500, 16))
-            
+
         mostrar_texto(pantalla, f"Nivel: {nivel_experiencia}", fuente_nivel, NEGRO, (ANCHO - 100, ALTO - 50))
         mostrar_texto(pantalla, f"XP: {puntos_experiencia}", fuente_nivel, NEGRO, (ANCHO - 100, ALTO - 20))
 
@@ -154,7 +173,56 @@ def pantalla_clasificaciones(pantalla, ANCHO, ALTO, sonido_seleccion):
         for i, clasificacion in enumerate(clasificaciones):
             color = ROJO if i == clasificacion_seleccionada else NEGRO
             mostrar_texto(pantalla, clasificacion, fuente_niveles, color, (ANCHO // 2, 150 + i * 50))
+            
+        mostrar_texto(pantalla, "Presiona ESC para volver", fuente_niveles, ROJO, (ANCHO // 2, ALTO - 50))
 
         pygame.display.flip()
+
+def pantalla_personajes(pantalla, ANCHO, ALTO, sonido_seleccion):
+    personaje_seleccionado = 0
+
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_UP:
+                    personaje_seleccionado = (personaje_seleccionado - 1) % len(personajes)
+                elif evento.key == pygame.K_DOWN:
+                    personaje_seleccionado = (personaje_seleccionado + 1) % len(personajes)
+                elif evento.key == pygame.K_RETURN:
+                    pygame.mixer.Sound.play(sonido_seleccion)
+                    return "pantalla_inicio"
+                elif evento.key == pygame.K_ESCAPE:
+                    return "pantalla_inicio"
+
+        pantalla.fill(BLANCO)
+        mostrar_texto(pantalla, "Selecciona un Personaje", fuente_titulo, NEGRO, (ANCHO // 2, 50))
+
+        # Mostrar tarjetas de personaje en una fila
+        espacio_x = 40
+        espacio_y = 150
+        ancho_tarjeta = 180
+        alto_tarjeta = 300
+        for i in range(len(personajes)):
+            x = espacio_x + i * (ancho_tarjeta + 50)
+            y = espacio_y
+            mostrar_tarjeta(pantalla, x, y, ancho_tarjeta, alto_tarjeta, personajes[i], personajes_imagenes[i], i == personaje_seleccionado)
+            
+        mostrar_texto(pantalla, "Presiona Enter o ESC para volver", fuente_niveles, ROJO, (ANCHO // 2, ALTO - 50))
+
         pygame.display.flip()
 
+def mostrar_tarjeta(pantalla, x, y, ancho, alto, titulo, imagen, seleccionado=False):
+    color_fondo = AZUL_CLARO if seleccionado else BLANCO
+    pygame.draw.rect(pantalla, color_fondo, (x, y, ancho, alto), 0, 10)
+    pygame.draw.rect(pantalla, NEGRO, (x, y, ancho, alto), 2, 10)
+
+    titulo_texto = fuente_niveles.render(titulo, True, NEGRO)
+    titulo_rect = titulo_texto.get_rect(center=(x + ancho // 2, y + 20))
+    pantalla.blit(titulo_texto, titulo_rect)
+
+    imagen = pygame.image.load(imagen)
+    imagen = pygame.transform.scale(imagen, (ancho - 20, alto - 120))
+    pantalla.blit(imagen, (x + 10, y + 50))

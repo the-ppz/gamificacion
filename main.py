@@ -2,7 +2,7 @@ import pygame
 import sys
 import json
 from pantallas.pantalla_inicio import pantalla_inicio
-from pantallas.seleccion_niveles import seleccion_niveles, pantalla_clasificaciones
+from pantallas.seleccion_niveles import seleccion_niveles, pantalla_clasificaciones, pantalla_personajes
 from pantallas.pantalla_juego import pantalla_juego
 from pantallas.minijuego import minijuego
 from pantallas.preguntas_respuestas import juego_preguntas, mostrar_logros
@@ -43,11 +43,11 @@ def main():
 
     for sonido in sonidos:
         sonido.set_volume(configuraciones["volumen"] / 10.0)
-    
+
     while True:
         pantalla_inicio(pantalla, ANCHO, ALTO)
         nivel = seleccion_niveles(pantalla, ANCHO, ALTO, sonido_seleccion)
-        
+
         if nivel == "Minijuego":
             puntuacion = minijuego(pantalla, ANCHO, ALTO, configuraciones["dificultad"])
             puntos_experiencia += puntuacion
@@ -77,15 +77,17 @@ def main():
                 pantalla_equipo(pantalla, ANCHO, ALTO)
         elif nivel == "Clasificaciones":
             pantalla_clasificaciones(pantalla, ANCHO, ALTO, sonido_seleccion)
+        elif nivel == "Personajes":
+            pantalla_personajes(pantalla, ANCHO, ALTO, sonido_seleccion)
         elif nivel == "pantalla_inicio":
             continue
         else:
             pantalla_juego(pantalla, ANCHO, ALTO, nivel, puntos_experiencia)
-            
+
 if __name__ == "__main__":
     try:
         main()
     finally:
-        guardar_experiencia(0) 
+        guardar_experiencia(0)
         pygame.quit()
         sys.exit()
