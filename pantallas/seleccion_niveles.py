@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from pantallas.leaderboard import mostrar_leaderboard
 from pantallas.experiencia import obtener_nivel_experiencia, cargar_experiencia
 from pantallas.pantalla_ayuda import pantalla_ayuda
@@ -14,7 +15,15 @@ AMARILLO = (255, 255, 0)
 AZUL_CLARO = (173, 216, 230)
 VERDE = (59, 158, 98)
 
-fondo = pygame.image.load('src/fondo_inicio.jpg')
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+fondo = pygame.image.load(resource_path('src/fondo_inicio.jpg'))
 
 fuente_titulo = pygame.font.Font(None, 64)  
 fuente_niveles = pygame.font.Font(None, 27)  
@@ -41,10 +50,10 @@ configuraciones = [
 ]
 
 niveles_imagenes = [
-    "src/nivel1.png",
-    "src/nivel2.png",
-    "src/nivel3.png",
-    "src/minijuego.png"
+    resource_path("src/nivel1.png"),
+    resource_path("src/nivel2.png"),
+    resource_path("src/nivel3.png"),
+    resource_path("src/minijuego.png")
 ]
 
 personajes = [
@@ -56,11 +65,11 @@ personajes = [
 ]
 
 personajes_imagenes = [
-    "src/principiante.png",
-    "src/aprendiz.png",
-    "src/historico.png",
-    "src/erudito.png",
-    "src/sabio.png"
+    resource_path("src/principiante.png"),
+    resource_path("src/aprendiz.png"),
+    resource_path("src/historico.png"),
+    resource_path("src/erudito.png"),
+    resource_path("src/sabio.png")
 ]
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):

@@ -1,6 +1,7 @@
 import pygame
 import sys
 import json
+import os
 from pantallas.pantalla_inicio import pantalla_inicio
 from pantallas.seleccion_niveles import seleccion_niveles, pantalla_clasificaciones, pantalla_personajes
 from pantallas.pantalla_juego import pantalla_juego
@@ -16,9 +17,17 @@ pygame.init()
 
 pygame.mixer.init()
 
-sonido_seleccion = pygame.mixer.Sound('sonidos/seleccion.mp3')
-sonido_correcto = pygame.mixer.Sound('sonidos/correcto.mp3')
-sonido_incorrecto = pygame.mixer.Sound('sonidos/incorrecto.mp3')
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+sonido_seleccion = pygame.mixer.Sound(resource_path('sonidos/seleccion.mp3'))
+sonido_correcto = pygame.mixer.Sound(resource_path('sonidos/correcto.mp3'))
+sonido_incorrecto = pygame.mixer.Sound(resource_path('sonidos/incorrecto.mp3'))
 
 sonidos = [sonido_seleccion, sonido_correcto, sonido_incorrecto]
 

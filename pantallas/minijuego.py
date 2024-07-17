@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import json
+import os
 
 pygame.font.init()
 
@@ -9,26 +10,34 @@ BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 # Cargar imágenes de fondo según el nivel
 fondos = {
-    "Nivel 1: Historia Antigua": pygame.image.load('src/fondo_inicio.jpg'),
-    "Nivel 2: Cultura Colonial": pygame.image.load('src/fondo_inicio.jpg'),
-    "Nivel 3: Independencia": pygame.image.load('src/fondo_inicio.jpg')
+    "Nivel 1: Historia Antigua": pygame.image.load(resource_path('src/fondo_inicio.jpg')),
+    "Nivel 2: Cultura Colonial": pygame.image.load(resource_path('src/fondo_inicio.jpg')),
+    "Nivel 3: Independencia": pygame.image.load(resource_path('src/fondo_inicio.jpg'))
 }
 
 # Cargar y escalar imágenes del jugador, obstáculos y monedas
 personajes = {
-    "Principiante": pygame.transform.scale(pygame.image.load('src/principiante.png'), (120, 100)),
-    "Aprendiz": pygame.transform.scale(pygame.image.load('src/aprendiz.png'), (120, 100)),
-    "Historico": pygame.transform.scale(pygame.image.load('src/historico.png'), (120, 100)),
-    "Erudito": pygame.transform.scale(pygame.image.load('src/erudito.png'), (120, 100)),
-    "Sabio": pygame.transform.scale(pygame.image.load('src/sabio.png'), (120, 100))
+    "Principiante": pygame.transform.scale(pygame.image.load(resource_path('src/principiante.png')), (120, 100)),
+    "Aprendiz": pygame.transform.scale(pygame.image.load(resource_path('src/aprendiz.png')), (120, 100)),
+    "Historico": pygame.transform.scale(pygame.image.load(resource_path('src/historico.png')), (120, 100)),
+    "Erudito": pygame.transform.scale(pygame.image.load(resource_path('src/erudito.png')), (120, 100)),
+    "Sabio": pygame.transform.scale(pygame.image.load(resource_path('src/sabio.png')), (120, 100))
 }
 
-obstaculo_img = pygame.image.load('src/obstaculo.png')
+obstaculo_img = pygame.image.load(resource_path('src/obstaculo.png'))
 obstaculo_img = pygame.transform.scale(obstaculo_img, (50, 50))
 
-moneda_img = pygame.image.load('src/moneda.png')
+moneda_img = pygame.image.load(resource_path('src/moneda.png'))
 moneda_img = pygame.transform.scale(moneda_img, (25, 25))
 
 # Definición de fuentes

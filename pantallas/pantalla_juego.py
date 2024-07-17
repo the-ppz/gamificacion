@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import os
 from pantallas.experiencia import obtener_nivel_experiencia
 
 pygame.font.init()
@@ -9,21 +10,29 @@ BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 fuente_puntuacion = pygame.font.Font(None, 36)
 fuente_pausa = pygame.font.Font(None, 48)
 fuente_game_over = pygame.font.Font(None, 74)
 
-jugador_img = pygame.image.load('src/principiante.png')
+jugador_img = pygame.image.load(resource_path('src/principiante.png'))
 jugador_img = pygame.transform.scale(jugador_img, (50, 50))
-obstaculo_img = pygame.image.load('src/obstaculo.png')
+obstaculo_img = pygame.image.load(resource_path('src/obstaculo.png'))
 obstaculo_img = pygame.transform.scale(obstaculo_img, (50, 50))
-moneda_img = pygame.image.load('src/moneda.png')
+moneda_img = pygame.image.load(resource_path('src/moneda.png'))
 moneda_img = pygame.transform.scale(moneda_img, (25, 25))
 
 fondos = {
-    "Nivel 1: Historia Antigua": pygame.image.load('src/fondo_inicio.jpg'),
-    "Nivel 2: Cultura Colonial": pygame.image.load('src/fondo_inicio.jpg'),
-    "Nivel 3: Independencia": pygame.image.load('src/fondo_inicio.jpg')
+    "Nivel 1: Historia Antigua": pygame.image.load(resource_path('src/fondo_inicio.jpg')),
+    "Nivel 2: Cultura Colonial": pygame.image.load(resource_path('src/fondo_inicio.jpg')),
+    "Nivel 3: Independencia": pygame.image.load(resource_path('src/fondo_inicio.jpg'))
 }
 
 def mostrar_texto(pantalla, texto, fuente, color, centro):
